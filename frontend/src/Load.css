@@ -1,0 +1,22 @@
+@keyframes loading {
+    from{
+        transform: rotate(0deg);
+    }
+    to{
+        transform: rotate(360deg);
+    }
+}
+
+.load{
+    width: 50px;
+    height: 50px;
+
+    border-style: solid;
+    border-width: 5px;
+    border-color: rgb(212, 0, 255);
+    border-radius: 100%;
+    border-bottom-color: transparent;
+    border-right-color: transparent;
+
+    animation: loading infinite 1s linear;
+}

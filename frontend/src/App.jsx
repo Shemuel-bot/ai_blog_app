@@ -1,4 +1,4 @@
-// import './App.css'
+import Load from "./Load";
 
 function App() {
   return (
@@ -38,6 +38,9 @@ function App() {
                 <button id="generateBlogButton" className="bg-blue-600 text-white px-4 py-2 rounded-r-md hover:bg-blue-700 transistion-colors">Generate</button>
             </div>
           </div>
+
+          {/* <Load /> */}
+
 
           <section className="mt-10 flex-grow">
             <h2 className="text-xl mb-4 font-semibold">Generated Blog Article</h2>
