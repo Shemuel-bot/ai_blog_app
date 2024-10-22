@@ -1,4 +1,4 @@
-import Load from "./Load";
+import Load from "./modules/Load";
 
 function App() {
   return (

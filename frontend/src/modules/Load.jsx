@@ -1,4 +1,4 @@
-import './Load.css'
+import '../css/Load.css'
 
 function Load() {
     return(
