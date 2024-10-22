@@ -5,6 +5,8 @@ import { createRoot } from 'react-dom/client'
 import App from './App.jsx'
 import LogIn from "./LogIn.jsx";
 import SignUp from "./SignUp.jsx";
+import AllBlogs from "./AllBlogs.jsx";
+import BlogDetails from "./BlogDetails.jsx";
 
 const router = createBrowserRouter([
   {
@@ -16,10 +18,17 @@ const router = createBrowserRouter([
     element: <SignUp />
   },
   {
-    path:'home',
+    path:'/home',
     element: <App />
   },
-  
+  {
+    path:'/home/all-blogs',
+    element: <AllBlogs />
+  },
+  {
+    path:'home/all-blogs/details',
+    element: <BlogDetails />
+  }
 ])
 
 createRoot(document.getElementById('root')).render(
