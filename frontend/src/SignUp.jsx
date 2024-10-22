@@ -16,6 +16,8 @@ function SignUp() {
         </div>
       </nav>
 
+      <br />
+
       <div className="flex items-center justify-center h-screen">
         <div className="bg-white p-8 shadow-md rounded-lg max-w-md w-full">
           <form action="" className="space-y-4">
