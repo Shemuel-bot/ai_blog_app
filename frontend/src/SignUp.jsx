@@ -22,6 +22,7 @@ function SignUp() {
         <div className="bg-white p-8 shadow-md rounded-lg max-w-md w-full">
           <form action="" className="space-y-4">
             <h2 className="text-xl font-semibold">Sign Up</h2>
+            
             <div>
               <label
                 htmlFor="username"
