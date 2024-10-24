@@ -3,11 +3,34 @@ from django.http import JsonResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
+import json
+from pytube import YouTube
 
 # Create your views here.
 @login_required
 def index(request):
     return JsonResponse({'message':'success'})
+
+@csrf_exempt
+def generate_blog(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            yt_link = data['link']
+        
+        except (KeyError, json.JSONDecodeError):
+            return JsonResponse({'message':'Invalid data sent'}, status=400)
+        
+        title = yt_title(yt_link)
+    else:
+        return JsonResponse({'message': 'Invalid request method'}, status=405)
+
+
+def yt_title(link):
+    yt = YouTube(link)
+    title = yt.title
+    return title
 
 def user_login(request):
     if request.method == 'POST':
