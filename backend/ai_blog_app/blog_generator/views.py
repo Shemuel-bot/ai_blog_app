@@ -6,6 +6,8 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 import json
 from pytube import YouTube
+from django.conf import settings
+import os
 
 # Create your views here.
 @login_required
@@ -31,6 +33,18 @@ def yt_title(link):
     yt = YouTube(link)
     title = yt.title
     return title
+
+def download_audio(link):
+    yt = YouTube(link)
+    video = yt.streams.filter(only_audio=True).first()
+    out_file = video.download(output_path=settings.MEDIA_ROOT)
+    base, ext = os.path.splitext(out_file)
+    new_file = base + '.mp3'
+    os.rename(out_file, new_file)
+    return new_file
+
+def get_transcription(link):
+    pass
 
 def user_login(request):
     if request.method == 'POST':
