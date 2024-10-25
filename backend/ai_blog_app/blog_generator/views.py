@@ -10,6 +10,7 @@ from django.conf import settings
 import os
 import assemblyai as ai
 import openai
+from dotenv import load_dotenv
 
 # Create your views here.
 @login_required
@@ -36,7 +37,7 @@ def generate_blog(request):
         if not blog_content:
             return JsonResponse({'message':'Failed to generate blog article'}, status=500)
 
-        
+
    
         return JsonResponse({'message': blog_content})
     else:
@@ -67,7 +68,8 @@ def get_transcription(link):
     return transcript.text
 
 def generate_blog_from_transcription(transcription):
-    openai.api_key = "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"
+    load_dotenv()
+    openai.api_key = os.getenv("API_KEY")
 
     prompt = f'Based on the following transcript from a YouTube video, write a comprehensive blog article, write it based on the transcript, but dont make it look  like a youtube video, make it look like a proper blog article:\n\n{transcription}\n\nArticle:'
 
