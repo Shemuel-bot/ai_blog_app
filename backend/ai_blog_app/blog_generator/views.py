@@ -36,6 +36,7 @@ def generate_blog(request):
         if not blog_content:
             return JsonResponse({'message':'Failed to generate blog article'}, status=500)
 
+        
    
         return JsonResponse({'message': blog_content})
     else:
