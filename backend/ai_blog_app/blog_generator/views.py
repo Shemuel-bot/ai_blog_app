@@ -95,6 +95,14 @@ def blog_list(request):
     blog_articles = BlogPost.objects.filter(user=request.user)
     return JsonResponse({'message': blog_articles})
 
+def blog_details(request, pk):
+    blog_article_details = BlogPost.objects.get(id=pk)
+    if request.user == blog_article_details.user:
+        return JsonResponse({'message' : blog_article_details})
+    else:
+        return JsonResponse({'message' : 'Failed to fetch data'})
+
+
 def user_login(request):
     if request.method == 'POST':
         username = request.POST['username']
