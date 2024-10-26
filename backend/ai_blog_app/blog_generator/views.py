@@ -11,6 +11,7 @@ import os
 import assemblyai as ai
 import openai
 from dotenv import load_dotenv
+from .models import BlogPost
 
 # Create your views here.
 @login_required
@@ -27,7 +28,7 @@ def generate_blog(request):
         except (KeyError, json.JSONDecodeError):
             return JsonResponse({'message':'Invalid data sent'}, status=400)
         
-        #title = yt_title(yt_link)
+        title = yt_title(yt_link)
 
         transcription = get_transcription(yt_link)
         if not transcription:
@@ -37,7 +38,14 @@ def generate_blog(request):
         if not blog_content:
             return JsonResponse({'message':'Failed to generate blog article'}, status=500)
 
+        new_blog_article = BlogPost.objects.create(
+            user=request.user,
+            youtube_title=title,
+            youtube_link=yt_link,
+            generated_content=blog_content
+        )
 
+        new_blog_article.save()
    
         return JsonResponse({'message': blog_content})
     else:
@@ -82,6 +90,10 @@ def generate_blog_from_transcription(transcription):
     generated_content = response.choices[0].text.strip()
 
     return generated_content
+
+def blog_list(request):
+    blog_articles = BlogPost.objects.filter(user=request.user)
+    return JsonResponse({'message': blog_articles})
 
 def user_login(request):
     if request.method == 'POST':
