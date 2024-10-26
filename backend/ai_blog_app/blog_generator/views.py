@@ -5,10 +5,12 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 import json
-from pytube import YouTube
+from pytubefix import YouTube
 from django.conf import settings
 import os
 import assemblyai as ai
+import openai
+from dotenv import load_dotenv
 
 # Create your views here.
 @login_required
@@ -25,11 +27,19 @@ def generate_blog(request):
         except (KeyError, json.JSONDecodeError):
             return JsonResponse({'message':'Invalid data sent'}, status=400)
         
-        title = yt_title(yt_link)
+        #title = yt_title(yt_link)
 
         transcription = get_transcription(yt_link)
         if not transcription:
             return JsonResponse({'message':'Failed to get transcript'}, status=500)
+   
+        blog_content = generate_blog_from_transcription(transcription)
+        if not blog_content:
+            return JsonResponse({'message':'Failed to generate blog article'}, status=500)
+
+
+   
+        return JsonResponse({'message': blog_content})
     else:
         return JsonResponse({'message': 'Invalid request method'}, status=405)
 
@@ -57,6 +67,21 @@ def get_transcription(link):
 
     return transcript.text
 
+def generate_blog_from_transcription(transcription):
+    load_dotenv()
+    openai.api_key = os.getenv("API_KEY")
+
+    prompt = f'Based on the following transcript from a YouTube video, write a comprehensive blog article, write it based on the transcript, but dont make it look  like a youtube video, make it look like a proper blog article:\n\n{transcription}\n\nArticle:'
+
+    response = openai.completions.create(
+        model="gpt-3.5-turbo-instruct",
+        prompt=prompt,
+        max_tokens=1000,
+    )
+
+    generated_content = response.choices[0].text.strip()
+
+    return generated_content
 
 def user_login(request):
     if request.method == 'POST':
