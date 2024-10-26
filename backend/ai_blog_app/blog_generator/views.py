@@ -126,11 +126,13 @@ def user_signup(request):
             try:
                 user = User.objects.create_user(username, email, password)
                 user.save()
-                return JsonResponse({'message':'Sign up successful'})
+                return JsonResponse({'message':'successful'})
             except:
                 return JsonResponse({'message':'Error creating the account'})
         else:
             return JsonResponse({'message': 'Password does not match'})
+    elif request.method == 'OPTIONS':
+        print('text')
 
 def user_logout(request):
     logout(request)
