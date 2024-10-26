@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 function SignUp() {
   const navigate = useNavigate();
@@ -7,7 +7,7 @@ function SignUp() {
     fetch("http://127.0.0.1:8000/signup", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         username: document.getElementById("username").value,
@@ -28,10 +28,11 @@ function SignUp() {
           <h1 className="text-3xl font-bold">AI Blog Generator</h1>
         </div>
         <div>
-          <a href="#" className="text-white hover:underline">
-            Log in
-          </a>
-
+          <Link to="/">
+            <a href="#" className="text-white hover:underline">
+              Log in
+            </a>
+          </Link>
         </div>
       </nav>
 
@@ -39,9 +40,8 @@ function SignUp() {
 
       <div className="flex items-center justify-center h-screen">
         <div className="bg-white p-8 shadow-md rounded-lg max-w-md w-full">
-          <form action="" className="space-y-4">
+          <form action="#" className="space-y-4">
             <h2 className="text-xl font-semibold">Sign Up</h2>
-
             <div>
               <label htmlFor="username" className="block mb-1 font-medium">
                 Username

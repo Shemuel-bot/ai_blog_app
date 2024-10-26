@@ -115,12 +115,15 @@ def user_login(request):
         else:
             return JsonResponse({'message':'Login failed'})
 
+@csrf_exempt
 def user_signup(request):
     if request.method == 'POST':
-        username = request.POST['username']
-        email = request.POST['email']
-        password = request.POST['password']
-        repeatPassword = request.POST['repeatPassword']
+        data = json.loads(request.body)
+        
+        username = data['username']
+        email = data['email']
+        password = data['password']
+        repeatPassword = data['repeatPassword']
 
         if password == repeatPassword:
             try:
