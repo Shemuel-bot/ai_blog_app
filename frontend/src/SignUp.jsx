@@ -2,7 +2,6 @@ import { useNavigate, Link } from "react-router-dom";
 
 function SignUp() {
   const navigate = useNavigate();
-
   const eventHandler = async () => {
     fetch("http://127.0.0.1:8000/signup", {
       method: "POST",
@@ -17,7 +16,7 @@ function SignUp() {
       }),
     }).then(async (res) => {
       const a = await res.json();
-      if (a.message == "successful") navigate("/");
+      if (a.message === "successful") navigate("");
     });
   };
 
@@ -37,7 +36,6 @@ function SignUp() {
       </nav>
 
       <br />
-
       <div className="flex items-center justify-center h-screen">
         <div className="bg-white p-8 shadow-md rounded-lg max-w-md w-full">
           <form action="#" className="space-y-4">

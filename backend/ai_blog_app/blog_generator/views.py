@@ -102,16 +102,18 @@ def blog_details(request, pk):
     else:
         return JsonResponse({'message' : 'Failed to fetch data'})
 
-
+@csrf_exempt
 def user_login(request):
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
+        data = json.loads(request.body)
 
-        user = authenticate(request, username=username)
+        username = data['username']
+        password = data['password']
+
+        user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return JsonResponse({'message':'Login successful'})
+            return JsonResponse({'message':'successful'})
         else:
             return JsonResponse({'message':'Login failed'})
 
@@ -119,7 +121,7 @@ def user_login(request):
 def user_signup(request):
     if request.method == 'POST':
         data = json.loads(request.body)
-        
+
         username = data['username']
         email = data['email']
         password = data['password']
