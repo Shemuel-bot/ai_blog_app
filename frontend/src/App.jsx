@@ -1,7 +1,9 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Load from "./modules/Load";
+import { useEffect } from "react";
 
 function App() {
+
   const eventHandler = () => {
     document.getElementById("loading-circle").hidden = false;
 
@@ -12,7 +14,7 @@ function App() {
       },
       body: JSON.stringify({
         link: document.getElementById("youtubeLink").value,
-        id: localStorage.getItem('userId')
+        id: localStorage.getItem("userId"),
       }),
     }).then(async (res) => {
       const a = await res.json();
@@ -29,14 +31,15 @@ function App() {
           <h1 className="text-3xl font-bold">AI Blog Generator</h1>
         </div>
         <div>
-          <a href="#" className="text-white hover:underline">
-            log out
-          </a>
+          <Link to="/" className="text-white hover:underline" onClick={()=>{
+            localStorage.removeItem('userId')
+            localStorage.removeItem('blogId')
+          }}>
+            log-out
+          </Link>
           <br />
-          <Link to='/home/all-blogs' className="text-white hover:underline">
-
+          <Link to="/home/all-blogs" className="text-white hover:underline">
             all-blogs
-
           </Link>
         </div>
       </nav>
@@ -74,7 +77,9 @@ function App() {
               <button
                 id="generateBlogButton"
                 className="bg-blue-600 text-white px-4 py-2 rounded-r-md hover:bg-blue-700 transistion-colors"
-                onClick={() => {eventHandler()}}
+                onClick={() => {
+                  eventHandler();
+                }}
               >
                 Generate
               </button>
