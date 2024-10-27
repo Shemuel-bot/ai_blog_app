@@ -1,4 +1,20 @@
+import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import BlogPost from "./modules/BlogPost";
+
 function AllBlogs() {
+  const [blogs, setBlogs] = useState([])
+
+  useEffect(()=>{
+    fetch(`http://127.0.0.1:8000/blog-list/${Number(localStorage.getItem('userId'))}`, {
+      method: 'GET',
+    }).then(async res => {
+      const a = await res.json()
+      const ui = a.message.map(x => <BlogPost key={x.pk} title={x.title} content={x.content}/>)
+      setBlogs(ui)
+    })
+  }, [])
+
   return (
     <>
       <nav className="bg-blue-600 p-4 text-white flex justify-between">
@@ -9,6 +25,10 @@ function AllBlogs() {
           <a href="#" className="text-white hover:underline">
             log out
           </a>
+          <br />
+          <Link to='/home' className="text-white hover:underline">
+            home
+          </Link>
         </div>
       </nav>
 
@@ -18,20 +38,7 @@ function AllBlogs() {
             <section>
                 <h2 className="text-xl mb-4 font-semibold">All Blog Post</h2>
                 <div className="space-y-4">
-                    <div className="border border-gray-300 p-4 rounded-lg">
-                        <h3 className="text-lg font-semibold">Blog Post Title 1</h3>
-                        <p>This is the content of the blog post</p>
-                    </div>
-
-                    <div className="border border-gray-300 p-4 rounded-lg">
-                        <h3 className="text-lg font-semibold">Blog Post Title 1</h3>
-                        <p>This is the content of the blog post</p>
-                    </div>
-
-                    <div className="border border-gray-300 p-4 rounded-lg">
-                        <h3 className="text-lg font-semibold">Blog Post Title 1</h3>
-                        <p>This is the content of the blog post</p>
-                    </div>
+                    {blogs}
                 </div>
             </section>
         </div>

@@ -93,9 +93,19 @@ def generate_blog_from_transcription(transcription):
 
     return generated_content
 
-def blog_list(request):
-    blog_articles = BlogPost.objects.filter(user=request.user)
-    return JsonResponse({'message': blog_articles})
+def blog_list(request, pk):
+    user=User.objects.filter(id=pk)
+    blog_articles = BlogPost.objects.filter(user=user[0])
+    a = []
+    for i in blog_articles:
+        a.append({
+            "pk": i.pk,
+            "title": i.youtube_title,
+            "link": i.youtube_link,
+            "content":  i.generated_content
+        })
+
+    return JsonResponse({'message': a})
 
 def blog_details(request, pk):
     blog_article_details = BlogPost.objects.get(id=pk)

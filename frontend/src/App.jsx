@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import Load from "./modules/Load";
 
 function App() {
@@ -23,7 +24,7 @@ function App() {
 
   return (
     <>
-      <nav className="bg-blue-600 p-4 text-white flex justify-between">
+      <nav className="bg-blue-600 p-4 text-white flex justify-between ">
         <div>
           <h1 className="text-3xl font-bold">AI Blog Generator</h1>
         </div>
@@ -31,6 +32,12 @@ function App() {
           <a href="#" className="text-white hover:underline">
             log out
           </a>
+          <br />
+          <Link to='/home/all-blogs' className="text-white hover:underline">
+
+            all-blogs
+
+          </Link>
         </div>
       </nav>
 
