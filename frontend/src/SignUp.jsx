@@ -16,7 +16,7 @@ function SignUp() {
       }),
     }).then(async (res) => {
       const a = await res.json();
-      if (a.message === "successful") navigate("");
+      if (a.message === "successful") navigate("/");
     });
   };
 

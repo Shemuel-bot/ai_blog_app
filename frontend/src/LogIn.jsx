@@ -17,6 +17,7 @@ function LogIn() {
       const a = await res.json()
       if (a.message == 'successful'){
         localStorage.setItem('userId', a.user)
+        localStorage.setItem('logedIn', 'true')
         navigate('home')
       }
     })

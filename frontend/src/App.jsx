@@ -3,7 +3,14 @@ import Load from "./modules/Load";
 import { useEffect } from "react";
 
 function App() {
+  const navigate = useNavigate();
 
+  useEffect(()=> {
+    if (localStorage.getItem("logedIn") === "false")
+      navigate("/")
+  
+  }, [])
+  
   const eventHandler = () => {
     document.getElementById("loading-circle").hidden = false;
 
@@ -31,10 +38,15 @@ function App() {
           <h1 className="text-3xl font-bold">AI Blog Generator</h1>
         </div>
         <div>
-          <Link to="/" className="text-white hover:underline" onClick={()=>{
-            localStorage.removeItem('userId')
-            localStorage.removeItem('blogId')
-          }}>
+          <Link
+            to="/"
+            className="text-white hover:underline"
+            onClick={() => {
+              localStorage.removeItem("userId");
+              localStorage.removeItem("blogId");
+              localStorage.setItem("logedIn", "false");
+            }}
+          >
             log-out
           </Link>
           <br />

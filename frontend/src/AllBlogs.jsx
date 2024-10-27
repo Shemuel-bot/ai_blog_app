@@ -1,11 +1,15 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import BlogPost from "./modules/BlogPost";
 
 function AllBlogs() {
   const [blogs, setBlogs] = useState([]);
+  const navigate = useNavigate()
 
   useEffect(() => {
+    if (localStorage.getItem("logedIn") === "false")
+      navigate("/")
+
     fetch(
       `http://127.0.0.1:8000/blog-list/${Number(
         localStorage.getItem("userId")
@@ -35,6 +39,7 @@ function AllBlogs() {
             onClick={() => {
               localStorage.removeItem("userId");
               localStorage.removeItem("blogId");
+              localStorage.setItem('logedIn', 'false')
             }}
           >
             log-out
