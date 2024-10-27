@@ -21,8 +21,10 @@ def index(request):
 @csrf_exempt
 def generate_blog(request):
     if request.method == 'POST':
+        
         try:
             data = json.loads(request.body)
+            user=User.objects.filter(id=int(data['id']))
             yt_link = data['link']
         
         except (KeyError, json.JSONDecodeError):
@@ -37,9 +39,9 @@ def generate_blog(request):
         blog_content = generate_blog_from_transcription(transcription)
         if not blog_content:
             return JsonResponse({'message':'Failed to generate blog article'}, status=500)
-
+        
         new_blog_article = BlogPost.objects.create(
-            user=request.user,
+            user=user[0],
             youtube_title=title,
             youtube_link=yt_link,
             generated_content=blog_content
@@ -91,38 +93,71 @@ def generate_blog_from_transcription(transcription):
 
     return generated_content
 
-def blog_list(request):
-    blog_articles = BlogPost.objects.filter(user=request.user)
-    return JsonResponse({'message': blog_articles})
+def blog_list(request, pk):
+    user=User.objects.filter(id=pk)
+    blog_articles = BlogPost.objects.filter(user=user[0])
+    a = []
+    for i in blog_articles:
+        a.append({
+            "pk": i.pk,
+            "title": i.youtube_title,
+            "link": i.youtube_link,
+            "content":  i.generated_content
+        })
 
+    return JsonResponse({'message': a})
+
+def blog_details(request, pk):
+    blog_article_details = BlogPost.objects.get(id=pk)
+
+    blog = {
+        "pk": blog_article_details.pk,
+        "content": blog_article_details.generated_content,
+        "title": blog_article_details.youtube_title,
+        "link": blog_article_details.youtube_link
+    }
+
+    return JsonResponse({'message' : blog})
+
+@csrf_exempt
 def user_login(request):
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
+        data = json.loads(request.body)
 
-        user = authenticate(request, username=username)
+        username = data['username']
+        password = data['password']
+
+        user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return JsonResponse({'message':'Login successful'})
+            return JsonResponse({
+                'message':'successful',
+                'user': user.pk
+                })
         else:
             return JsonResponse({'message':'Login failed'})
 
+@csrf_exempt
 def user_signup(request):
     if request.method == 'POST':
-        username = request.POST['username']
-        email = request.POST['email']
-        password = request.POST['password']
-        repeatPassword = request.POST['repeatPassword']
+        data = json.loads(request.body)
+
+        username = data['username']
+        email = data['email']
+        password = data['password']
+        repeatPassword = data['repeatPassword']
 
         if password == repeatPassword:
             try:
                 user = User.objects.create_user(username, email, password)
                 user.save()
-                return JsonResponse({'message':'Sign up successful'})
+                return JsonResponse({'message':'successful'})
             except:
                 return JsonResponse({'message':'Error creating the account'})
         else:
             return JsonResponse({'message': 'Password does not match'})
+    elif request.method == 'OPTIONS':
+        print('text')
 
 def user_logout(request):
     logout(request)
