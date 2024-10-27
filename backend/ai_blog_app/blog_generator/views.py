@@ -21,8 +21,10 @@ def index(request):
 @csrf_exempt
 def generate_blog(request):
     if request.method == 'POST':
+        
         try:
             data = json.loads(request.body)
+            user=User.objects.filter(id=int(data['id']))
             yt_link = data['link']
         
         except (KeyError, json.JSONDecodeError):
@@ -37,9 +39,9 @@ def generate_blog(request):
         blog_content = generate_blog_from_transcription(transcription)
         if not blog_content:
             return JsonResponse({'message':'Failed to generate blog article'}, status=500)
-
+        
         new_blog_article = BlogPost.objects.create(
-            user=request.user,
+            user=user[0],
             youtube_title=title,
             youtube_link=yt_link,
             generated_content=blog_content
@@ -113,7 +115,10 @@ def user_login(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return JsonResponse({'message':'successful'})
+            return JsonResponse({
+                'message':'successful',
+                'user': user.pk
+                })
         else:
             return JsonResponse({'message':'Login failed'})
 

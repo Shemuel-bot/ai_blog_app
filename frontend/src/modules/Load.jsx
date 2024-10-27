@@ -2,7 +2,7 @@ import '../css/Load.css'
 
 function Load() {
     return(
-        <div id="loading-circle" className="load">
+        <div hidden id="loading-circle" className="load">
 
         </div>
     )

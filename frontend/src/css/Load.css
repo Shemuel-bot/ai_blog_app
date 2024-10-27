@@ -18,5 +18,8 @@
     border-bottom-color: transparent;
     border-right-color: transparent;
 
+    margin-left: 39%;
+    margin-top: 10px;
+
     animation: loading infinite 1s linear;
 }

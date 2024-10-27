@@ -1,5 +1,4 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
 
 function LogIn() {
   const navigate = useNavigate()
@@ -16,9 +15,10 @@ function LogIn() {
       })
     }).then(async res => {
       const a = await res.json()
-      console.log(a)
-      if (a.message == 'successful')
-          navigate('home')
+      if (a.message == 'successful'){
+        localStorage.setItem('userId', a.user)
+        navigate('home')
+      }
     })
   }
 
