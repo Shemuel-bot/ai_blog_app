@@ -10,7 +10,7 @@ function AllBlogs() {
       method: 'GET',
     }).then(async res => {
       const a = await res.json()
-      const ui = a.message.map(x => <BlogPost key={x.pk} title={x.title} content={x.content}/>)
+      const ui = a.message.map(x => <BlogPost key={x.pk} title={x.title} content={x.content} id={x.pk}/>)
       setBlogs(ui)
     })
   }, [])

@@ -109,10 +109,15 @@ def blog_list(request, pk):
 
 def blog_details(request, pk):
     blog_article_details = BlogPost.objects.get(id=pk)
-    if request.user == blog_article_details.user:
-        return JsonResponse({'message' : blog_article_details})
-    else:
-        return JsonResponse({'message' : 'Failed to fetch data'})
+
+    blog = {
+        "pk": blog_article_details.pk,
+        "content": blog_article_details.generated_content,
+        "title": blog_article_details.youtube_title,
+        "link": blog_article_details.youtube_link
+    }
+
+    return JsonResponse({'message' : blog})
 
 @csrf_exempt
 def user_login(request):
